@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "name": "PlentyShop",
+  "marketplaceName": {
+    "de": "PlentyShop Boilerplate",
+    "en": "PlentyShop Boilerplate"
+  },
+  "description": "This is a template plugin for new plugins extending plentyShop frontends.",
+  "shortDescription": {
+    "de": "Dies ist ein Template Plugin für neue Plugins, die das PlentyShop Frontend erweitern wollen.",
+    "en": "This is a template plugin for new plugins extending plentyShop frontends."
+  },
+  "author": "plentysystems AG",
+  "license": "AGPL-3.0",
+  "pluginIcon": "icon_plugin_xs.png",
+  "price": 0.00,
+  "authorIcon": "icon_author_xs.png",
+  "email": "example@example.com",
+  "phone": "+49 123 456 789",
+  "categories": [
+    "3885"
+  ],
+  "keywords": [
+    "plentymarkets",
+    "plugins",
+    "layout"
+  ],
+  "type": "template",
+  "require": {
+    "IO": "~5.0.0"
+  },
+  "namespace": "PlentyShop",
+  "serviceProvider": "PlentyShop\\Providers\\PlentyShopServiceProvider",
+  "javaScriptFiles": []
+}
