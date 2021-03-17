@@ -20,15 +20,6 @@ class PlentyShopServiceProvider extends TemplateServiceProvider
      */
     public function boot(Twig $twig, Dispatcher $dispatcher)
     {
-        // Override a twig template
-        // $this->overrideTemplate("Ceres::PageDesign.PageDesign", "PlentyShop::PageDesign.PageDesign");
-
-        // Add a script template to the markup
-        /*$dispatcher->listen("IO.Resources.Import", function(ResourceContainer $container)
-        {
-            $container->addScriptTemplate("PlentyShop::PageDesign.Components.MobileNavigation");
-        }, 0);*/
-
         // Register our own widgets
         /** @var ContentWidgetRepositoryContract $widgetRepository */
         $widgetRepository = pluginApp(ContentWidgetRepositoryContract::class);

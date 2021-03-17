@@ -1,0 +1,49 @@
+{
+  "name": "plentyshop",
+  "version": "0.0.1",
+  "description": "Template repository for new plugins extending plentyShop frontends.",
+  "main": "base.js",
+  "scripts": {
+    "start": "webpack --watch --progress",
+    "build": "npm run build:prod && npm run build:dev",
+    "build:dev": "webpack --progress",
+    "build:prod": "webpack --env.prod --progress",
+    "build:js": "npm run build:js:dev && npm run build:js:prod",
+    "build:js:dev": "webpack --config-name scripts --progress",
+    "build:js:prod": "webpack --config-name scripts --env.prod --progress",
+    "build:sass": "npm run build:sass:dev && npm run build:sass:prod",
+    "build:sass:dev": "webpack --config-name styles --progress",
+    "build:sass:prod": "webpack --config-name styles --env.prod --progress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plentymarkets/plugin-boilerplate-plentyshop.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/plentymarkets/plugin-boilerplate-plentyshop/issues"
+  },
+  "homepage": "https://github.com/plentymarkets/plugin-boilerplate-plentyshop#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.9.6",
+    "autoprefixer": "^8.6.5",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.5.3",
+    "mini-css-extract-plugin": "^0.8.2",
+    "node-sass": "^4.14.1",
+    "postcss": "^6.0.21",
+    "postcss-loader": "^3.0.0",
+    "postcss-scss": "^1.0.5",
+    "sass-loader": "^7.3.1",
+    "vue-loader": "^15.9.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-fix-style-only-entries": "^0.3.1",
+    "webpack-require-from": "^1.8.1"
+  }
+}
