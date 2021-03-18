@@ -37,6 +37,12 @@
       "name": "Import javascript bundle",
       "description": "Import the javascript bundle into the DOM",
       "defaultLayoutContainer": "Ceres::Script.AfterScriptsLoaded"
+    },
+    {
+      "key": "PlentyShop\\DataProviders\\ImportCSS",
+      "name": "Import css bundle",
+      "description": "Import the css bundle into the DOM",
+      "defaultLayoutContainer": "Ceres::Template.Style"
     }
   ]
 }
