@@ -3,7 +3,7 @@ namespace PlentyShop\DataProviders;
 
 use Plenty\Plugin\Templates\Twig;
 
-class ImportJS
+class ImportCSS
 {
     /**
      * @param Twig $twig
@@ -11,6 +11,6 @@ class ImportJS
      */
     public function call(Twig $twig)
     {
-        return $twig->render('PlentyShop::DataProvider.ImportJS', []);
+        return $twig->render('PlentyShop::DataProvider.ImportCSS', []);
     }
 }
