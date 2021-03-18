@@ -31,5 +31,12 @@
   },
   "namespace": "PlentyShop",
   "serviceProvider": "PlentyShop\\Providers\\PlentyShopServiceProvider",
-  "javaScriptFiles": []
+  "dataProviders": [
+    {
+      "key": "PlentyShop\\DataProviders\\ImportJS",
+      "name": "Import javascript bundle",
+      "description": "Import the javascript bundle into the DOM",
+      "defaultLayoutContainer": "Ceres::Script.AfterScriptsLoaded"
+    }
+  ]
 }
