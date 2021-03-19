@@ -12,7 +12,8 @@ module.exports = env =>
         name: "scripts", // Build script identifier for webpack
         mode: env.prod ? "production" : "development", // Production or development mode
         entry: { // Entry points
-            base: "./resources/js/src/base.js",
+            client: "./resources/js/src/client.js",
+            server: "./resources/js/src/server.js",
         },
         output: {
             filename: "plentyshop-[name]" + (env.prod ? ".min" : "") + ".js",
