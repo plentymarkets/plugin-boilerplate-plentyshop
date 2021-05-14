@@ -13,7 +13,7 @@ module.exports = env =>
         entry: "./resources/js/src/server.js",
         target: "node",
         output: {
-            filename: "plentyshop-server" + (env.prod ? ".min" : "") + ".js",
+            filename: "plentyshop-boilerplate-server" + (env.prod ? ".min" : "") + ".js",
             path: path.resolve(__dirname, "..", "..", "resources/js/dist/"),
             libraryTarget: "commonjs2"
         },

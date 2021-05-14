@@ -1,4 +1,3 @@
-{% import "Ceres::Widgets.Helper.TwigBuilder" as Twig %}
 {% import "Ceres::Widgets.Helper.WidgetHelper" as WidgetHelper %}
 
 {% set customClass = widget.settings.customClass.mobile %}
@@ -14,9 +13,9 @@
 {% set useStore = widget.settings.useStore.mobile %}
 
 <div class="widget widget-{{ appearance | default("primary") }} {% if customClass | length > 0 %} {{ customClass }}{% endif %} {% if spacingMargin | length > 0 %} {{ spacingMargin }}{% endif %}"
-        {% if inlineMargin | length > 0 %} style="{{ inlineMargin }}"{% endif %}>
+    {% if inlineMargin | length > 0 %} style="{{ inlineMargin }}"{% endif %}>
     <hello-world
-            text="{{ text | default("World") }}"
-            :useStore="{{ useStore | json_encode }}"
-    ></hello-world>
+        text="{{ text | default("World") }}"
+        :useStore="{{ useStore | json_encode }}">
+    </hello-world>
 </div>
