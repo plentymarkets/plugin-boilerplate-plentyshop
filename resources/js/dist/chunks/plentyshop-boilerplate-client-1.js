@@ -267,4 +267,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=plentyshop-client-1.js.map
+//# sourceMappingURL=plentyshop-boilerplate-client-1.js.map

@@ -29,9 +29,9 @@ class WhoToGreetWidget extends BaseWidget
      */
     public function getData()
     {
-        return WidgetDataFactory::make("PlentyShop::HelloWorldWidget")
-            ->withLabel("Widget.HelloWorldLabel")
-            ->withPreviewImageUrl("/images/hello-world.svg")
+        return WidgetDataFactory::make("PlentyShop::WhoToGreetWidget")
+            ->withLabel("Widget.WhoToGreetWidgetLabel")
+            ->withPreviewImageUrl("/images/who-to-greet.svg")
             ->withType(WidgetTypes::DEFAULT)
             ->withCategory(WidgetCategories::TEXT)
             ->withPosition(200)

@@ -47,7 +47,7 @@ module.exports = env =>
         plugins: [
             new FixStyleOnlyEntriesPlugin(),
             new MiniCssExtractPlugin({
-                filename: "../../css/plentyshop-boilerlpate-[name]" + (env.prod ? ".min" : "") + ".css",
+                filename: "../../css/plentyshop-boilerplate-[name]" + (env.prod ? ".min" : "") + ".css",
             })
         ],
         output: {

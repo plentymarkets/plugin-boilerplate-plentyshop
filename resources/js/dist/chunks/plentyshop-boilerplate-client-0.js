@@ -332,4 +332,4 @@ var getters = {
 /***/ })
 
 }]);
-//# sourceMappingURL=plentyshop-client-0.js.map
+//# sourceMappingURL=plentyshop-boilerplate-client-0.js.map

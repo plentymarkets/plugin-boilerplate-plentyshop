@@ -1,5 +1,5 @@
 {
-  "name": "plentyshop",
+  "name": "plentyshopboilerplate",
   "version": "0.0.1",
   "description": "Template repository for new plugins extending plentyShop frontends.",
   "main": "base.js",

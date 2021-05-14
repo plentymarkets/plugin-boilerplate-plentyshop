@@ -6,8 +6,8 @@ use Plenty\Modules\ShopBuilder\Contracts\ContentWidgetRepositoryContract;
 use Plenty\Modules\Webshop\Template\Providers\TemplateServiceProvider;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Plugin\Events\Dispatcher;
-use PlentyShop\Widgets\HelloWorldWidget;
-use PlentyShop\Widgets\WhoToGreetWidget;
+use PlentyShopBoilerplate\Widgets\HelloWorldWidget;
+use PlentyShopBoilerplate\Widgets\WhoToGreetWidget;
 
 /*
  * The service provider is the plugins entry point.

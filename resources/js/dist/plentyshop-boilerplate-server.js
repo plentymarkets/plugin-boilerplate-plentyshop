@@ -1,49 +1,34 @@
+module.exports =
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	function webpackJsonpCallback(data) {
-/******/ 		var chunkIds = data[0];
-/******/ 		var moreModules = data[1];
-/******/
-/******/
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, resolves = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
-/******/
-/******/ 		while(resolves.length) {
-/******/ 			resolves.shift()();
-/******/ 		}
-/******/
-/******/ 	};
-/******/
-/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 	// Promise = chunk loading, 0 = chunk loaded
+/******/ 	// object to store loaded chunks
+/******/ 	// "0" means "already loaded"
 /******/ 	var installedChunks = {
-/******/ 		"main": 0
+/******/ 		0: 0
 /******/ 	};
-/******/
-/******/
-/******/
-/******/ 	// script path function
-/******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "chunks/plentyshop-client-" + ({}[chunkId]||chunkId) + ".js"
+/******/ 	// WebpackRequireFrom - monkey-patching
+/******/ 	if (typeof jsonpScriptSrc === 'function') {
+/******/ 	  var original_jsonpScriptSrc = jsonpScriptSrc;
+/******/ 	  function patchJsonpScriptSrc () {
+/******/ 	    try {
+/******/ 	      if (typeof __loadPluginChunk !== "function") {
+/******/ 	        throw new Error("WebpackRequireFrom: '__loadPluginChunk' is not a function or not available at runtime. See https://github.com/agoldis/webpack-require-from#troubleshooting");
+/******/ 	      }
+/******/ 	      var newSrc = __loadPluginChunk(original_jsonpScriptSrc.apply(this, arguments));
+/******/ 	      if (!newSrc || typeof newSrc !== 'string') {
+/******/ 	        throw new Error("WebpackRequireFrom: '__loadPluginChunk' does not return string. See https://github.com/agoldis/webpack-require-from#troubleshooting");
+/******/ 	      }
+/******/ 	      return newSrc;
+/******/ 	    } catch (e) {
+/******/ 	      if (!false) {
+/******/ 	        console.error(e);
+/******/ 	      }
+/******/ 	      return original_jsonpScriptSrc.apply(this, arguments);
+/******/ 	    }
+/******/ 	  }
+/******/ 	  jsonpScriptSrc = patchJsonpScriptSrc
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -70,66 +55,11 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
-/******/ 	// This file contains only the entry chunk.
 /******/ 	// The chunk loading function for additional chunks
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
-/******/ 		var promises = [];
-/******/
-/******/
-/******/ 		// JSONP chunk loading for javascript
-/******/
-/******/ 		var installedChunkData = installedChunks[chunkId];
-/******/ 		if(installedChunkData !== 0) { // 0 means "already installed".
-/******/
-/******/ 			// a Promise means "currently loading".
-/******/ 			if(installedChunkData) {
-/******/ 				promises.push(installedChunkData[2]);
-/******/ 			} else {
-/******/ 				// setup Promise in chunk cache
-/******/ 				var promise = new Promise(function(resolve, reject) {
-/******/ 					installedChunkData = installedChunks[chunkId] = [resolve, reject];
-/******/ 				});
-/******/ 				promises.push(installedChunkData[2] = promise);
-/******/
-/******/ 				// start chunk loading
-/******/ 				var script = document.createElement('script');
-/******/ 				var onScriptComplete;
-/******/
-/******/ 				script.charset = 'utf-8';
-/******/ 				script.timeout = 120;
-/******/ 				if (__webpack_require__.nc) {
-/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
-/******/ 				}
-/******/ 				script.src = jsonpScriptSrc(chunkId);
-/******/
-/******/ 				// create error before stack unwound to get useful stacktrace later
-/******/ 				var error = new Error();
-/******/ 				onScriptComplete = function (event) {
-/******/ 					// avoid mem leaks in IE.
-/******/ 					script.onerror = script.onload = null;
-/******/ 					clearTimeout(timeout);
-/******/ 					var chunk = installedChunks[chunkId];
-/******/ 					if(chunk !== 0) {
-/******/ 						if(chunk) {
-/******/ 							var errorType = event && (event.type === 'load' ? 'missing' : event.type);
-/******/ 							var realSrc = event && event.target && event.target.src;
-/******/ 							error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
-/******/ 							error.name = 'ChunkLoadError';
-/******/ 							error.type = errorType;
-/******/ 							error.request = realSrc;
-/******/ 							chunk[1](error);
-/******/ 						}
-/******/ 						installedChunks[chunkId] = undefined;
-/******/ 					}
-/******/ 				};
-/******/ 				var timeout = setTimeout(function(){
-/******/ 					onScriptComplete({ type: 'timeout', target: script });
-/******/ 				}, 120000);
-/******/ 				script.onerror = script.onload = onScriptComplete;
-/******/ 				document.head.appendChild(script);
-/******/ 			}
-/******/ 		}
-/******/ 		return Promise.all(promises);
+/******/ 	// Since all referenced chunks are already included
+/******/ 	// in this file, this function is empty here.
+/******/ 	__webpack_require__.e = function requireEnsure() {
+/******/ 		return Promise.resolve();
 /******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
@@ -184,22 +114,110 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
-/******/ 	// on error function for async loading
-/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
-/******/
-/******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
-/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
-/******/ 	jsonpArray.push = webpackJsonpCallback;
-/******/ 	jsonpArray = jsonpArray.slice();
-/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-/******/ 	var parentJsonpFunction = oldJsonpFunction;
+/******/ 	// uncaught error handler for webpack runtime
+/******/ 	__webpack_require__.oe = function(err) {
+/******/ 		process.nextTick(function() {
+/******/ 			throw err; // catch this error by using import().catch()
+/******/ 		});
+/******/ 	};
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./resources/js/src/client.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./resources/js/src/server.js");
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/HelloWorld.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/src/app/components/HelloWorld.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_registerStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/registerStore */ "./resources/js/src/app/mixins/registerStore.js");
+//
+//
+//
+//
+//
+//
+
+/*
+    This is a Hello World component for demonstration purposes.
+    Take a look at HelloWorldWidget.twig to see, how it is used in the DOM.
+    It is also used to showcase the VueX store - when the useStore prop is true, the text prop is ignored and the text
+    is fetched from the store. The text in the store can be modified via the WhoToGreet.vue component.
+    For more information about Single File Components, please refer to https://vuejs.org/v2/guide/single-file-components.html
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // The name of the component
+  name: "hello-world",
+  // The mixin is used to register our VueX store
+  mixins: [_mixins_registerStore__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  // Props are input parameters for the component
+  props: {
+    text: String,
+    useStore: Boolean
+  },
+  // Computed properties automatically update, when one of it's constituents changes.
+  computed: {
+    computedText: function computedText() {
+      // Fetch the computedText from the VueX Store
+      if (this.useStore) {
+        return this.$store.getters['computedText'];
+      }
+
+      return "Hello " + this.text + "!";
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/WhoToGreet.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/src/app/components/WhoToGreet.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+
+/*
+    This is an example component for showcasing the VueX store.
+    Take a look at WhoToGreetWidget.twig to see, how it is used in the DOM.
+    For more information about Single File Components, please refer to https://vuejs.org/v2/guide/single-file-components.html
+ */
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // The name of the component
+  name: "who-to-greet",
+  // The data on
+  data: function data() {
+    return {
+      text: "World"
+    };
+  },
+  watch: {
+    // Whenever text changes, this function will runs
+    text: function text() {
+      // We want to run a mutation to write our input into the store
+      this.$store.commit("setHelloWorldText", this.text);
+    }
+  }
+});
+
+/***/ }),
 
 /***/ "./node_modules/core-js/internals/a-function.js":
 /*!******************************************************!*\
@@ -1032,9 +1050,9 @@ module.exports = function (it) {
   !*** ./node_modules/core-js/internals/global.js ***!
   \**************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var check = function (it) {
+var check = function (it) {
   return it && it.Math == Math && it;
 };
 
@@ -1049,7 +1067,6 @@ module.exports =
   // eslint-disable-next-line no-new-func -- fallback
   (function () { return this; })() || Function('return this')();
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -3301,63 +3318,390 @@ for (var COLLECTION_NAME in DOMIterables) {
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ "./resources/js/src/app/publicPath.js":
-/*!********************************************!*\
-  !*** ./resources/js/src/app/publicPath.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// eslint-disable-next-line camelcase
-
-/*
- * This file is needed to tell webpack where to find asynchronously loaded chunks.
- * It should be imported as the first thing in the client bundle.
- */
-__webpack_require__.p = window.plentyShopPublicPath;
-
-/***/ }),
-
-/***/ "./resources/js/src/client.js":
-/*!************************************!*\
-  !*** ./resources/js/src/client.js ***!
-  \************************************/
-/*! no exports provided */
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/HelloWorld.vue?vue&type=template&id=367f719c&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/src/app/components/HelloWorld.vue?vue&type=template&id=367f719c& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._ssrNode("<p>" + _vm._ssrEscape(_vm._s(_vm.computedText)) + "</p>")
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/WhoToGreet.vue?vue&type=template&id=46877902&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/src/app/components/WhoToGreet.vue?vue&type=template&id=46877902& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._ssrNode("<input" + _vm._ssrAttr("value", _vm.text) + ">")
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () {
+        injectStyles.call(
+          this,
+          (options.functional ? this.parent : this).$root.$options.shadowRoot
+        )
+      }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functional component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ "./resources/js/src/app/components/HelloWorld.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/src/app/components/HelloWorld.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HelloWorld_vue_vue_type_template_id_367f719c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HelloWorld.vue?vue&type=template&id=367f719c& */ "./resources/js/src/app/components/HelloWorld.vue?vue&type=template&id=367f719c&");
+/* harmony import */ var _HelloWorld_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HelloWorld.vue?vue&type=script&lang=js& */ "./resources/js/src/app/components/HelloWorld.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _HelloWorld_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HelloWorld_vue_vue_type_template_id_367f719c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HelloWorld_vue_vue_type_template_id_367f719c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  "4ef7df12"
+  
+)
+
+component.options.__file = "resources/js/src/app/components/HelloWorld.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/src/app/components/HelloWorld.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/src/app/components/HelloWorld.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_HelloWorld_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib!../../../../../node_modules/vue-loader/lib??vue-loader-options!./HelloWorld.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/HelloWorld.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_HelloWorld_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/src/app/components/HelloWorld.vue?vue&type=template&id=367f719c&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/src/app/components/HelloWorld.vue?vue&type=template&id=367f719c& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelloWorld_vue_vue_type_template_id_367f719c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./HelloWorld.vue?vue&type=template&id=367f719c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/HelloWorld.vue?vue&type=template&id=367f719c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelloWorld_vue_vue_type_template_id_367f719c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HelloWorld_vue_vue_type_template_id_367f719c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/src/app/components/WhoToGreet.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/src/app/components/WhoToGreet.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _WhoToGreet_vue_vue_type_template_id_46877902___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WhoToGreet.vue?vue&type=template&id=46877902& */ "./resources/js/src/app/components/WhoToGreet.vue?vue&type=template&id=46877902&");
+/* harmony import */ var _WhoToGreet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WhoToGreet.vue?vue&type=script&lang=js& */ "./resources/js/src/app/components/WhoToGreet.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _WhoToGreet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _WhoToGreet_vue_vue_type_template_id_46877902___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _WhoToGreet_vue_vue_type_template_id_46877902___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  "3a4b4247"
+  
+)
+
+component.options.__file = "resources/js/src/app/components/WhoToGreet.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/src/app/components/WhoToGreet.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/src/app/components/WhoToGreet.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_WhoToGreet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib!../../../../../node_modules/vue-loader/lib??vue-loader-options!./WhoToGreet.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/WhoToGreet.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_WhoToGreet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/src/app/components/WhoToGreet.vue?vue&type=template&id=46877902&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/src/app/components/WhoToGreet.vue?vue&type=template&id=46877902& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WhoToGreet_vue_vue_type_template_id_46877902___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./WhoToGreet.vue?vue&type=template&id=46877902& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/app/components/WhoToGreet.vue?vue&type=template&id=46877902&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WhoToGreet_vue_vue_type_template_id_46877902___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WhoToGreet_vue_vue_type_template_id_46877902___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/src/app/mixins/registerStore.js":
+/*!******************************************************!*\
+  !*** ./resources/js/src/app/mixins/registerStore.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store_HelloWorldModule__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/HelloWorldModule */ "./resources/js/src/app/store/HelloWorldModule.js");
+
+/*
+    This is a mixin used to register our VueX module into the VueX store.
+    A mixin is a way to reuse code by "mixing it in" into a component.
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // The mixins created lifecycle runs before the component lifecycle.
+  created: function created() {
+    // We check if the module is not yet registered
+    if (!this.$store.hasModule('helloWorld')) {
+      // preserveState is used for literally preserving the already existing state
+      this.$store.registerModule('helloWorld', _store_HelloWorldModule__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        preserveState: !!this.$store.state.helloWorld
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/src/app/store/HelloWorldModule.js":
+/*!********************************************************!*\
+  !*** ./resources/js/src/app/store/HelloWorldModule.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/*
+    This is an example VueX store. It allows us to share state between multiple components.
+    Please refer to https://vuex.vuejs.org/ for more information.
+ */
+// The state of the VueX store.
+var state = function state() {
+  return {
+    text: "World"
+  };
+}; // Mutations can change the state
+
+
+var mutations = {
+  setHelloWorldText: function setHelloWorldText(state, newText) {
+    state.text = newText;
+  }
+}; // Actions are potentially asynchronous functions (REST calls for example)
+
+var actions = {// We have no need for any actions in this store, so we leave this empty.
+  // You can also omit the actions variable in your module, if you don't need it.
+}; // Getters behave similar to computed properties of components
+
+var getters = {
+  computedText: function computedText(state) {
+    return "Hello " + state.text + "!";
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state,
+  mutations: mutations,
+  actions: actions,
+  getters: getters
+});
+
+/***/ }),
+
+/***/ "./resources/js/src/server.js":
+/*!************************************!*\
+  !*** ./resources/js/src/server.js ***!
+  \************************************/
+/*! exports provided: beforeCreate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "beforeCreate", function() { return beforeCreate; });
 /* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.promise.js */ "./node_modules/core-js/modules/es.promise.js");
 /* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
@@ -3368,8 +3712,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator.js */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
 /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _app_publicPath__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app/publicPath */ "./resources/js/src/app/publicPath.js");
-/* harmony import */ var _app_publicPath__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_app_publicPath__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
@@ -3377,21 +3719,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /*
- * This is our clientside javascript entry point
+ * This is our serverside javascript entry point
+ * We are going to bootstrap the serverside of our js code here
  */
-// The public path allows us to load vue components as asynchronous chunks.
- // The Ceres bundle provides Vue, we do not need to bundle it ourself
 
-var Vue = window.Vue; // Register our components (asynchronously)
+/**
+ * This hook runs before the creation of the Vue application.
+ * @param context The renderers context
+ */
+function beforeCreate(context) {
+  Vue.component("hello-world", function () {
+    return Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! ./app/components/HelloWorld.vue */ "./resources/js/src/app/components/HelloWorld.vue"));
+  });
+  Vue.component("who-to-greet", function () {
+    return Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! ./app/components/WhoToGreet.vue */ "./resources/js/src/app/components/WhoToGreet.vue"));
+  });
+}
 
-Vue.component("hello-world", function () {
-  return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./app/components/HelloWorld.vue */ "./resources/js/src/app/components/HelloWorld.vue"));
-});
-Vue.component("who-to-greet", function () {
-  return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./app/components/WhoToGreet.vue */ "./resources/js/src/app/components/WhoToGreet.vue"));
-});
+
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=plentyshop-client.js.map
+//# sourceMappingURL=plentyshop-boilerplate-server.js.map
