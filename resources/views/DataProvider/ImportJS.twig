@@ -1,3 +1,7 @@
+<script type="text/javascript">
+    window.plentyShopPublicPath = "{{ plugin_path('PlentyShop') ~ '/js/dist/' }}"
+</script>
+
 {% set minSuffix = '.min' %}
 {% if ceresConfig.log.performanceLevel  == 'development' %}
     {% set minSuffix = '' %}
