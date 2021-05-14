@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    window.plentyShopPublicPath = "{{ plugin_path('PlentyShop') ~ '/js/dist/' }}"
+    window.plentyShopPublicPath = "{{ plugin_path('PlentyShopBoilerplate') ~ '/js/dist/' }}"
 </script>
 
 {% set minSuffix = '.min' %}
@@ -7,5 +7,5 @@
     {% set minSuffix = '' %}
 {% endif %}
 
-<!-- SSR:entry({{ ssr_entry('PlentyShop', 'resources/js/dist/plentyshop-server' ~ minSuffix ~ '.js') }}) -->
-<script src="{{ plugin_path('PlentyShop') }}/js/dist/plentyshop-client{{ minSuffix }}.js?v={{ buildHash }}"></script>
+<!-- SSR:entry({{ ssr_entry('PlentyShopBoilerplate', 'resources/js/dist/plentyshop-boilerplate-server' ~ minSuffix ~ '.js') }}) -->
+<script src="{{ plugin_path('PlentyShopBoilerplate') }}/js/dist/plentyshop-boilerplate-client{{ minSuffix }}.js?v={{ buildHash }}"></script>

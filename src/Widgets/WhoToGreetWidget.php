@@ -1,6 +1,6 @@
 <?php
 
-namespace PlentyShop\Widgets;
+namespace PlentyShopBoilerplate\Widgets;
 
 use Ceres\Widgets\Helper\BaseWidget;
 use Ceres\Widgets\Helper\Factories\Settings\AppearanceSettingFactory;
@@ -34,7 +34,7 @@ class WhoToGreetWidget extends BaseWidget
             ->withPreviewImageUrl("/images/hello-world.svg")
             ->withType(WidgetTypes::DEFAULT)
             ->withCategory(WidgetCategories::TEXT)
-            ->withPosition(800)
+            ->withPosition(200)
             ->toArray();
     }
 

@@ -1,5 +1,5 @@
 <?php
-namespace PlentyShop\DataProviders;
+namespace PlentyShopBoilerplate\DataProviders;
 
 use Plenty\Plugin\Templates\Twig;
 

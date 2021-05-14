@@ -1,6 +1,6 @@
 <?php
 
-namespace PlentyShop\Providers;
+namespace PlentyShopBoilerplate\Providers;
 
 use Plenty\Modules\ShopBuilder\Contracts\ContentWidgetRepositoryContract;
 use Plenty\Modules\Webshop\Template\Providers\TemplateServiceProvider;
@@ -14,7 +14,7 @@ use PlentyShop\Widgets\WhoToGreetWidget;
  * We can use the boot and register functions to bootstrap our plugin.
  * Please refer to https://laravel.com/docs/8.x/providers for more information.
  */
-class PlentyShopServiceProvider extends TemplateServiceProvider
+class PlentyShopBoilerplateServiceProvider extends TemplateServiceProvider
 {
     /*
      * Register our widgets.
