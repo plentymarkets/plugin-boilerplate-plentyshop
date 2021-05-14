@@ -17,6 +17,6 @@
         {% if inlineMargin | length > 0 %} style="{{ inlineMargin }}"{% endif %}>
     <hello-world
             text="{{ text | default("World") }}"
-            :useStore="{{ useStore | json_encode }}"
+            :use-store="{{ useStore | json_encode }}"
     ></hello-world>
 </div>
