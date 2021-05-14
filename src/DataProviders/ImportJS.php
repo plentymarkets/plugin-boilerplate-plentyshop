@@ -11,6 +11,6 @@ class ImportJS
      */
     public function call(Twig $twig)
     {
-        return $twig->render('PlentyShop::DataProvider.ImportJS', []);
+        return $twig->render('PlentyShopBoilerplate::DataProvider.ImportJS', []);
     }
 }

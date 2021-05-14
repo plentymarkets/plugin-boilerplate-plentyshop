@@ -13,8 +13,8 @@ module.exports = env =>
         mode: env.prod ? "production" : "development", // Production or development mode
         entry: "./resources/js/src/client.js", // Entry point
         output: {
-            filename: "plentyshop-client" + (env.prod ? ".min" : "") + ".js",
-            chunkFilename: "chunks/plentyshop-client-[name]"+ (env.prod ? ".min" : "") + ".js",
+            filename: "plentyshop-boilerplate-client" + (env.prod ? ".min" : "") + ".js",
+            chunkFilename: "chunks/plentyshop-boilerplate-client-[name]"+ (env.prod ? ".min" : "") + ".js",
             path: path.resolve(__dirname, "..", "..", "resources/js/dist/")
         },
         devtool: "source-map",

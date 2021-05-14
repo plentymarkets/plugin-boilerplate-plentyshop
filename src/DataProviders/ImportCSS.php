@@ -11,6 +11,6 @@ class ImportCSS
      */
     public function call(Twig $twig)
     {
-        return $twig->render('PlentyShop::DataProvider.ImportCSS', []);
+        return $twig->render('PlentyShopBoilerplate::DataProvider.ImportCSS', []);
     }
 }
