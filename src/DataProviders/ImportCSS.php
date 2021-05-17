@@ -1,5 +1,5 @@
 <?php
-namespace PlentyShop\DataProviders;
+namespace PlentyShopBoilerplate\DataProviders;
 
 use Plenty\Plugin\Templates\Twig;
 
@@ -11,6 +11,6 @@ class ImportCSS
      */
     public function call(Twig $twig)
     {
-        return $twig->render('PlentyShop::DataProvider.ImportCSS', []);
+        return $twig->render('PlentyShopBoilerplate::DataProvider.ImportCSS', []);
     }
 }

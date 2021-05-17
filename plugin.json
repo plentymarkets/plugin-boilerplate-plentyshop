@@ -1,14 +1,14 @@
 {
   "version": "0.0.1",
-  "name": "PlentyShop",
+  "name": "PlentyShopBoilerplate",
   "marketplaceName": {
     "de": "PlentyShop Boilerplate",
     "en": "PlentyShop Boilerplate"
   },
-  "description": "This is a template plugin for new plugins extending plentyShop frontends.",
+  "description": "This is a template plugin for new plugins extending plentyShop and Ceres frontends.",
   "shortDescription": {
-    "de": "Dies ist ein Template Plugin für neue Plugins, die das PlentyShop Frontend erweitern wollen.",
-    "en": "This is a template plugin for new plugins extending plentyShop frontends."
+    "de": "Dies ist ein Template Plugin für neue Plugins, die das PlentyShop und Ceres Frontend erweitern wollen.",
+    "en": "This is a template plugin for new plugins extending plentyShop and Ceres frontends."
   },
   "author": "plentysystems AG",
   "license": "AGPL-3.0",
@@ -23,23 +23,24 @@
   "keywords": [
     "plentymarkets",
     "plugins",
-    "layout"
+    "layout",
+    "ceres"
   ],
   "type": "template",
   "require": {
     "IO": "~5.0.0"
   },
-  "namespace": "PlentyShop",
-  "serviceProvider": "PlentyShop\\Providers\\PlentyShopServiceProvider",
+  "namespace": "PlentyShopBoilerplate",
+  "serviceProvider": "PlentyShopBoilerplate\\Providers\\PlentyShopBoilerplateServiceProvider",
   "dataProviders": [
     {
-      "key": "PlentyShop\\DataProviders\\ImportJS",
+      "key": "PlentyShopBoilerplate\\DataProviders\\ImportJS",
       "name": "Import javascript bundle",
       "description": "Import the javascript bundle into the DOM",
       "defaultLayoutContainer": "Ceres::Script.AfterScriptsLoaded"
     },
     {
-      "key": "PlentyShop\\DataProviders\\ImportCSS",
+      "key": "PlentyShopBoilerplate\\DataProviders\\ImportCSS",
       "name": "Import css bundle",
       "description": "Import the css bundle into the DOM",
       "defaultLayoutContainer": "Ceres::Template.Style"

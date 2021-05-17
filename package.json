@@ -1,5 +1,5 @@
 {
-  "name": "plentyshop",
+  "name": "plentyshopboilerplate",
   "version": "0.0.1",
   "description": "Template repository for new plugins extending plentyShop frontends.",
   "main": "base.js",
@@ -13,7 +13,8 @@
     "build:js:prod": "webpack --config-name scripts --env.prod --progress",
     "build:sass": "npm run build:sass:dev && npm run build:sass:prod",
     "build:sass:dev": "webpack --config-name styles --progress",
-    "build:sass:prod": "webpack --config-name styles --env.prod --progress"
+    "build:sass:prod": "webpack --config-name styles --env.prod --progress",
+    "prebuild": "rm -rf resources/js/dist"
   },
   "repository": {
     "type": "git",
@@ -45,5 +46,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-fix-style-only-entries": "^0.3.1",
     "webpack-require-from": "^1.8.1"
+  },
+  "dependencies": {
+    "core-js": "^3.11.2"
   }
 }
